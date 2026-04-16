@@ -1,0 +1,53 @@
+VALID;ID_TEST;TEST DESCRIPTION;CIF;ACRONYM;DESCRIPTION;DEPARTMENT;STARTING_DATE;BUDGET;RESULT
+VALID;TC1;valid case;A12345674;TEST5;valid text;HR;01/01/2025;50000.00;a2425c4782b3775dc643901f20421669
+VALID;TC2;valid case;B98765431;TESTL6;valid texts;FINANCE;02/01/2025;50000.01;81ae6341355c1e9742c407c186098552
+VALID;TC3;valid case;E00000000;TEST56789;valid text withtwospacesinside;LEGAL;30/12/2027;999999.99;08f039c6586fd815d35b6aa367c5f17c
+VALID;TC4;valid case;H11111119;TEST567890;valid textuptotwentyninechars;LOGISTICS;31/12/2027;1000000.00;1ef710e3f7196e7e0164d8455402cdb7
+VALID;TC5;valid case;P1234567D;TEST5;valid text;HR;02/02/2026;50000.00;e08239a1ab40ccc2a6f84c501b353cdb
+VALID;TC6;valid case;Q9876543A;TEST5;valid text;HR;30/11/2027;50000.00;3af7320f6615099c0e7194a4d8ab6aa8
+VALID;TC7;Valid case;S0000000J;TEST5;valid text;HR;01/01/2025;50000.00;63bdbf992d2b593fabf85c9c93b679f4
+VALID;TC8;Valid case;K1111111I;TEST5;valid text;HR;01/01/2025;50000.00;96c412730deca9c55cb665f98448a324
+INVALID;TC9;invalid case;X1111111I;TEST5;valid text;HR;01/01/2025;50000.00;Invalid CIF format
+INVALID;TC10;invalid case;A12345675;TEST5;valid text;HR;01/01/2025;50000.00;Invalid CIF character control number
+INVALID;TC11;invalid case;AA12345674;TEST5;valid text;HR;01/01/2025;50000.00;Invalid CIF format
+INVALID;TC12;invalid case;A123456744;TEST5;valid text;HR;01/01/2025;50000.00;Invalid CIF format
+INVALID;TC13;invalid case;12345674;TEST5;valid text;HR;01/01/2025;50000.00;Invalid CIF format
+INVALID;TC14;invalid case;A1234567;TEST5;valid text;HR;01/01/2025;50000.00;Invalid CIF format
+INVALID;TC15;invalid case;112345674;TEST5;valid text;HR;01/01/2025;50000.00;Invalid CIF format
+INVALID;TC17;invalid case;A12345674;TEST#;valid text;HR;01/01/2025;50000.00;Invalid acronym
+INVALID;TC18;invalid case;A12345674;TEST;valid text;HR;01/01/2025;50000.00;Invalid acronym
+INVALID;TC19;invalid case;A12345674;TEST5678901;valid text;HR;01/01/2025;50000.00;Invalid acronym
+INVALID;TC21;invalid case;A12345674;TEST5;invalid t;HR;01/01/2025;50000.00;Invalid description format
+INVALID;TC22;invalid case;A12345674;TEST5;invalid text withthirtyonepaces;HR;01/01/2025;50000.00;Invalid description format
+INVALID;TC23;invalid case;A12345674;TEST5;valid text;OTHER;01/01/2025;10.00;Invalid department
+INVALID;TC24;invalid case;A12345674;TEST5;valid text;12345;01/01/2025;10.00;Invalid department
+INVALID;TC25;invalid case;A12345674;TEST5;valid text;HR;123456;50000.00;Invalid date format
+INVALID;TC26;invalid case;A12345674;TEST5;valid text;HR;00/01/2025;50000.00;Invalid date format
+INVALID;TC27;invalid case;A12345674;TEST5;valid text;HR;32/01/2025;50000.00;Invalid date format
+INVALID;TC28;invalid case;A12345674;TEST5;valid text;HR;123/01/2025;50000.00;Invalid date format
+INVALID;TC29;invalid case;A12345674;TEST5;valid text;HR;1/01/2025;50000.00;Invalid date format
+INVALID;TC30;invalid case;A12345674;TEST5;valid text;HR;AA/01/2025;50000.00;Invalid date format
+INVALID;TC31;invalid case;A12345674;TEST5;valid text;HR;/01/2025;50000.00;Invalid date format
+INVALID;TC32;invalid case;A12345674;TEST5;valid text;HR;01/00/2025;50000.00;Invalid date format
+INVALID;TC33;invalid case;A12345674;TEST5;valid text;HR;01/13/2025;50000.00;Invalid date format
+INVALID;TC34;invalid case;A12345674;TEST5;valid text;HR;01/123/2025;50000.00;Invalid date format
+INVALID;TC35;invalid case;A12345674;TEST5;valid text;HR;01/1/2025;50000.00;Invalid date format
+INVALID;TC36;invalid case;A12345674;TEST5;valid text;HR;01/AA/2025;50000.00;Invalid date format
+INVALID;TC37;invalid case;A12345674;TEST5;valid text;HR;01//2025;50000.00;Invalid date format
+INVALID;TC38;invalid case;A12345674;TEST5;valid text;HR;31/12/2024;50000.00;Invalid date format
+INVALID;TC39;invalid case;A12345674;TEST5;valid text;HR;01/01/2051;50000.00;Invalid date format
+INVALID;TC40;invalid case;A12345674;TEST5;valid text;HR;01/01/20255;50000.00;Invalid date format
+INVALID;TC41;invalid case;A12345674;TEST5;valid text;HR;01/01/202;50000.00;Invalid date format
+INVALID;TC42;invalid case;A12345674;TEST5;valid text;HR;01/01/YYYY;50000.00;Invalid date format
+INVALID;TC43;invalid case;A12345674;TEST5;valid text;HR;01/01/;50000.00;Invalid date format
+INVALID;TC44;invalid case;A12345674;TEST5;valid text;HR;01#01/2025;50000.00;Invalid date format
+INVALID;TC45;invalid case;A12345674;TEST5;valid text;HR;1012025;50000.00;Invalid date format
+INVALID;TC46;invalid case;A12345674;TEST5;valid text;HR;01/01#2025;50000.00;Invalid date format
+INVALID;TC47;invalid case;A12345674;TEST5;valid text;HR;01//01/2025;50000.00;Invalid date format
+INVALID;TC48;invalid case;A12345674;TEST5;valid text;HR;1012025;50000.00;Invalid date format
+INVALID;TC49;invalid case;A12345674;TEST5;valid text;HR;01/01//2025;50000.00;Invalid date format
+INVALID;TC50;invalid case;A12345674;TEST5;valid text;HR;01/01/2025;49999.99;Invalid budget amount
+INVALID;TC51;invalid case;A12345674;TEST5;valid text;HR;01/01/2025;1000000.01;Invalid budget amount
+INVALID;TC52;invalid case;A12345674;TEST5;valid text;HR;01/01/2025;five dollars;Invalid budget amount
+INVALID;TC53;invalid case;A12345674;TEST5;valid text;HR;01/01/2025;50000.001;Invalid budget amount
+INVALID;TC54;invalid case;A12345674;TEST5;valid text;HR;29/02/2026;50000.00;Invalid date format

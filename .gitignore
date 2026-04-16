@@ -1,0 +1,8 @@
+venv*
+.venv*
+.idea
+.pybuilder
+target
+# Python cache
+__pycache__/
+*.pyc
