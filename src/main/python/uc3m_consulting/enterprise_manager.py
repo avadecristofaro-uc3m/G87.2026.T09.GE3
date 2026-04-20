@@ -22,7 +22,7 @@ class EnterpriseManager:
         """validates a cif number """
         if not isinstance(c, str):
             raise EnterpriseManagementException("CIF code must be a string")
-        EnterpriseManager.validate_field(
+        EnterpriseManager._validate_field(
             r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$",
             c,
             "Invalid CIF format")
@@ -83,11 +83,11 @@ class EnterpriseManager:
                          budget: str):
         """registers a new project"""
         self.validate_cif(company_cif)
-        self.validate_field(r"^[a-zA-Z0-9]{5,10}", project_acronym, "Invalid acronym")
-        self.validate_field(r"^.{10,30}$", project_description, "Invalid description format")
-        self.validate_field(r"(HR|FINANCE|LEGAL|LOGISTICS)", department, "Invalid department")
+        self._validate_field(r"^[a-zA-Z0-9]{5,10}", project_acronym, "Invalid acronym")
+        self._validate_field(r"^.{10,30}$", project_description, "Invalid description format")
+        self._validate_field(r"(HR|FINANCE|LEGAL|LOGISTICS)", department, "Invalid department")
         self.validate_starting_date(date)
-        self.validate_budget(budget)
+        self._validate_budget(budget)
 
 
         new_project = EnterpriseProject(company_cif=company_cif,
@@ -109,7 +109,7 @@ class EnterpriseManager:
         return new_project.project_id
 
     @staticmethod
-    def validate_budget(budget: str) -> float:
+    def _validate_budget(budget: str) -> float:
         """Validate budget format and range, and return it as float."""
         try:
             f_bdgt = float(budget)
@@ -134,7 +134,7 @@ class EnterpriseManager:
                 raise EnterpriseManagementException(error_message)
 
     @staticmethod
-    def validate_field(rule: str, field: str, error_message: str):
+    def _validate_field(rule: str, field: str, error_message: str):
         """Validates a project field against a regex pattern"""
         mr = re.compile(rule)
         res = mr.fullmatch(field)
@@ -163,7 +163,6 @@ class EnterpriseManager:
         # open documents
         d_list = self._load_json_file(TEST_DOCUMENTS_STORE_FILE)
 
-
         rst = 0
 
         # loop to find
@@ -181,12 +180,14 @@ class EnterpriseManager:
 
         if rst == 0:
             raise EnterpriseManagementException("No documents found")
+
         # prepare json text
         report = self._create_docs_report(date_str, rst)
 
         dl = self._load_json_file(TEST_NUMDOCS_STORE_FILE)
         dl.append(report)
         self._save_json_file(TEST_NUMDOCS_STORE_FILE, dl)
+
         return rst
 
     @staticmethod
@@ -198,6 +199,7 @@ class EnterpriseManager:
              "Numfiles": num_files
              }
         return s
+
     @staticmethod
     def _has_valid_document_signature(el: dict) -> bool:
         """Returns true if the stored document signature is valid"""
@@ -210,6 +212,7 @@ class EnterpriseManager:
             p = ProjectDocument(el["project_id"], el["file_name"])
 
             return p.document_signature == el["document_signature"]
+
     @staticmethod
     def _save_json_file(file_path, data_list):
         """Saves data to json file"""
@@ -236,7 +239,7 @@ class EnterpriseManager:
     @staticmethod
     def _validate_and_parse_date(date_str: str):
         """Validate DD/MM/YYYY and return a date object"""
-        EnterpriseManager.validate_field(
+        EnterpriseManager._validate_field(
             r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$",
             date_str,
             "Invalid date format")
