@@ -182,17 +182,22 @@ class EnterpriseManager:
         if rst == 0:
             raise EnterpriseManagementException("No documents found")
         # prepare json text
-        now_str = datetime.now(timezone.utc).timestamp()
-        s = {"Querydate":  date_str,
-             "ReportDate": now_str,
-             "Numfiles": rst
-             }
+        report = self._create_docs_report(date_str, rst)
 
         dl = self._load_json_file(TEST_NUMDOCS_STORE_FILE)
-        dl.append(s)
+        dl.append(report)
         self._save_json_file(TEST_NUMDOCS_STORE_FILE, dl)
         return rst
 
+    @staticmethod
+    def _create_docs_report(query_date: str, num_files: int) -> dict:
+        """Create the report record for a document query."""
+        now_str = datetime.now(timezone.utc).timestamp()
+        s = {"Querydate": query_date,
+             "ReportDate": now_str,
+             "Numfiles": num_files
+             }
+        return s
     @staticmethod
     def _has_valid_document_signature(el: dict) -> bool:
         """Returns true if the stored document signature is valid"""
