@@ -87,20 +87,7 @@ class EnterpriseManager:
         self.validate_field(r"^.{10,30}$", project_description, "Invalid description format")
         self.validate_field(r"(HR|FINANCE|LEGAL|LOGISTICS)", department, "Invalid department")
         self.validate_starting_date(date)
-
-        try:
-            f_bdgt  = float(budget)
-        except ValueError as exc:
-            raise EnterpriseManagementException("Invalid budget amount") from exc
-
-        n_str = str(f_bdgt)
-        if '.' in n_str:
-            decimales = len(n_str.split('.')[1])
-            if decimales > 2:
-                raise EnterpriseManagementException("Invalid budget amount")
-
-        if f_bdgt < 50000 or f_bdgt > 1000000:
-            raise EnterpriseManagementException("Invalid budget amount")
+        self.validate_budget(budget)
 
 
         new_project = EnterpriseProject(company_cif=company_cif,
@@ -121,6 +108,24 @@ class EnterpriseManager:
 
         return new_project.project_id
 
+    @staticmethod
+    def validate_budget(budget: str) -> float:
+        """Validate budget format and range, and return it as float."""
+        try:
+            f_bdgt = float(budget)
+        except ValueError as exc:
+            raise EnterpriseManagementException("Invalid budget amount") from exc
+
+        n_str = str(f_bdgt)
+        if "." in n_str:
+            decimales = len(n_str.split('.')[1])
+            if decimales > 2:
+                raise EnterpriseManagementException("Invalid budget amount")
+
+        if f_bdgt < 50000 or f_bdgt > 1000000:
+            raise EnterpriseManagementException("Invalid budget amount")
+
+        return f_bdgt
     @staticmethod
     def _raise_if_duplicate(projects, new_project, error_message: str):
         """Raises exception if duplicate project exists"""
