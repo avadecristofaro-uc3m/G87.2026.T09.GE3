@@ -110,23 +110,23 @@ class EnterpriseManager:
                                         starting_date=date,
                                         project_budget=budget)
 
-        try:
-            with open(PROJECTS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                t_l = json.load(file)
-        except FileNotFoundError:
-            t_l = []
-        except json.JSONDecodeError as ex:
-            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        t_l = self._load_json_file(PROJECTS_STORE_FILE)
 
-        for t_i in t_l:
-            if t_i == new_project.to_json():
-                raise EnterpriseManagementException("Duplicated project in projects list")
+        project_data = new_project.to_json()
+        self._raise_if_duplicate(t_l, project_data, "Duplicated project in projects list")
 
-        t_l.append(new_project.to_json())
+        t_l.append(project_data)
 
         self._save_json_file(PROJECTS_STORE_FILE, t_l)
 
         return new_project.project_id
+
+    @staticmethod
+    def _raise_if_duplicate(projects, new_project, error_message: str):
+        """Raises exception if duplicate project exists"""
+        for project in projects:
+            if project == new_project:
+                raise EnterpriseManagementException(error_message)
 
     @staticmethod
     def validate_field(rule: str, field: str, error_message: str):
@@ -194,11 +194,13 @@ class EnterpriseManager:
         self._save_json_file(TEST_NUMDOCS_STORE_FILE, dl)
         return rst
 
+
     @staticmethod
-    def _save_json_file(file_path, data):
+    def _save_json_file(file_path, data_list):
+        """Saves data to json file"""
         try:
             with open(file_path, "w", encoding="utf-8", newline="") as file:
-                json.dump(data, file, indent=2)
+                json.dump(data_list, file, indent=2)
         except FileNotFoundError as ex:
             raise EnterpriseManagementException("Wrong file  or file path") from ex
         except json.JSONDecodeError as ex:
@@ -206,6 +208,7 @@ class EnterpriseManager:
 
     @staticmethod
     def _load_json_file(file_path):
+        """Loads data from json file"""
         try:
             with open(file_path, "r", encoding="utf-8", newline="") as file:
                 dl = json.load(file)
