@@ -3,6 +3,8 @@ import re
 import json
 
 from datetime import datetime, timezone
+from typing import Any
+
 from freezegun import freeze_time
 from uc3m_consulting.enterprise_project import EnterpriseProject
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
@@ -163,11 +165,7 @@ class EnterpriseManager:
         my_date = self._validate_and_parse_date(date_str)
 
         # open documents
-        try:
-            with open(TEST_DOCUMENTS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                d_list = json.load(file)
-        except FileNotFoundError as ex:
-            raise EnterpriseManagementException("Wrong file  or file path") from ex
+        d_list = self._load_json_file(TEST_DOCUMENTS_STORE_FILE)
 
 
         rst = 0
@@ -200,13 +198,7 @@ class EnterpriseManager:
              "Numfiles": rst
              }
 
-        try:
-            with open(TEST_NUMDOCS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                dl = json.load(file)
-        except FileNotFoundError:
-            dl = []
-        except json.JSONDecodeError as ex:
-            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        dl = self._load_json_file(TEST_NUMDOCS_STORE_FILE)
         dl.append(s)
         try:
             with open(TEST_NUMDOCS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
@@ -214,6 +206,17 @@ class EnterpriseManager:
         except FileNotFoundError as ex:
             raise EnterpriseManagementException("Wrong file  or file path") from ex
         return rst
+
+    @staticmethod
+    def _load_json_file(file_path):
+        try:
+            with open(file_path, "r", encoding="utf-8", newline="") as file:
+                dl = json.load(file)
+        except FileNotFoundError:
+            dl = []
+        except json.JSONDecodeError as ex:
+            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        return dl
 
     @staticmethod
     def _validate_and_parse_date(date_str: str):
