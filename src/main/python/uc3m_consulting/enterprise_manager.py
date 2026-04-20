@@ -3,7 +3,6 @@ import re
 import json
 
 from datetime import datetime, timezone
-from typing import Any
 
 from freezegun import freeze_time
 from uc3m_consulting.enterprise_project import EnterpriseProject
@@ -23,9 +22,10 @@ class EnterpriseManager:
         """validates a cif number """
         if not isinstance(c, str):
             raise EnterpriseManagementException("CIF code must be a string")
-        p = re.compile(r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$")
-        if not p.fullmatch(c):
-            raise EnterpriseManagementException("Invalid CIF format")
+        EnterpriseManager.validate_field(
+            r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$",
+            c,
+            "Invalid CIF format")
 
         l = c[0]
         n = c[1:8]
@@ -83,20 +83,9 @@ class EnterpriseManager:
                          budget: str):
         """registers a new project"""
         self.validate_cif(company_cif)
-        mr = re.compile(r"^[a-zA-Z0-9]{5,10}")
-        res = mr.fullmatch(project_acronym)
-        if not res:
-            raise EnterpriseManagementException("Invalid acronym")
-        md = re.compile(r"^.{10,30}$")
-        res = md.fullmatch(project_description)
-        if not res:
-            raise EnterpriseManagementException("Invalid description format")
-
-        mr = re.compile(r"(HR|FINANCE|LEGAL|LOGISTICS)")
-        res = mr.fullmatch(department)
-        if not res:
-            raise EnterpriseManagementException("Invalid department")
-
+        self.validate_field(r"^[a-zA-Z0-9]{5,10}", project_acronym, "Invalid acronym")
+        self.validate_field(r"^.{10,30}$", project_description, "Invalid description format")
+        self.validate_field(r"(HR|FINANCE|LEGAL|LOGISTICS)", department, "Invalid department")
         self.validate_starting_date(date)
 
         try:
@@ -136,15 +125,16 @@ class EnterpriseManager:
         t_l.append(new_project.to_json())
 
         self._save_json_file(PROJECTS_STORE_FILE, t_l)
-        # try:
-        #     with open(PROJECTS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-        #         json.dump(t_l, file, indent=2)
-        # except FileNotFoundError as ex:
-        #     raise EnterpriseManagementException("Wrong file  or file path") from ex
-        # except json.JSONDecodeError as ex:
-        #     raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
+
         return new_project.project_id
 
+    @staticmethod
+    def validate_field(rule: str, field: str, error_message: str):
+        """Validates a project field against a regex pattern"""
+        mr = re.compile(rule)
+        res = mr.fullmatch(field)
+        if not res:
+            raise EnterpriseManagementException(error_message)
 
     def find_docs(self, date_str):
         """
@@ -163,7 +153,7 @@ class EnterpriseManager:
             EnterpriseManagementException: On invalid date, file IO errors,
                 missing data, or cryptographic integrity failure.
         """
-        my_date = self._validate_and_parse_date(date_str)
+        self._validate_and_parse_date(date_str)
 
         # open documents
         d_list = self._load_json_file(TEST_DOCUMENTS_STORE_FILE)
@@ -228,10 +218,10 @@ class EnterpriseManager:
     @staticmethod
     def _validate_and_parse_date(date_str: str):
         """Validate DD/MM/YYYY and return a date object"""
-        mr = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        res = mr.fullmatch(date_str)
-        if not res:
-            raise EnterpriseManagementException("Invalid date format")
+        EnterpriseManager.validate_field(
+            r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$",
+            date_str,
+            "Invalid date format")
 
         try:
             my_date = datetime.strptime(date_str, "%d/%m/%Y").date()
