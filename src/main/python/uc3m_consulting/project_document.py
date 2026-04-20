@@ -20,7 +20,7 @@ class ProjectDocument():
                 "project_id": self.__project_id,
                 "file_name": self.__file_name,
                 "register_date": self.__register_date,
-                "document_signature": self.document_signature}
+                "document": self.document_signature}
 
     def __signature_string(self):
         """Composes the string to be used for generating the key for the date"""

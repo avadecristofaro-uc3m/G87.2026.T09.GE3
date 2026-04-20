@@ -174,16 +174,10 @@ class EnterpriseManager:
             doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
 
             if doc_date_str == date_str:
-                d_obj = datetime.fromtimestamp(time_val, tz=timezone.utc)
-                with freeze_time(d_obj):
-                    # check the project id (thanks to freezetime)
-                    # if project_id are different then the data has been
-                    #manipulated
-                    p = ProjectDocument(el["project_id"], el["file_name"])
-                    if p.document_signature == el["document_signature"]:
-                        rst = rst + 1
-                    else:
-                        raise EnterpriseManagementException("Inconsistent document signature")
+                if self._has_valid_document_signature(el):
+                    rst = rst + 1
+                else:
+                    raise EnterpriseManagementException("Inconsistent document signature")
 
         if rst == 0:
             raise EnterpriseManagementException("No documents found")
@@ -199,7 +193,18 @@ class EnterpriseManager:
         self._save_json_file(TEST_NUMDOCS_STORE_FILE, dl)
         return rst
 
+    @staticmethod
+    def _has_valid_document_signature(el: dict) -> bool:
+        """Returns true if the stored document signature is valid"""
+        time_val = el["register_date"]
+        d_obj = datetime.fromtimestamp(time_val, tz=timezone.utc)
+        with freeze_time(d_obj):
+            # check the project id (thanks to freezetime)
+            # if project_id are different then the data has been
+            # manipulated
+            p = ProjectDocument(el["project_id"], el["file_name"])
 
+            return p.document_signature == el["document_signature"]
     @staticmethod
     def _save_json_file(file_path, data_list):
         """Saves data to json file"""
