@@ -23,7 +23,7 @@ class EnterpriseManager:
             """validates a cif number """
             if not isinstance(c, str):
                 raise EnterpriseManagementException("CIF code must be a string")
-            EnterpriseManager._validate_field(
+            EnterpriseManager.__EnterpriseManager._validate_field(
                 r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$",
                 c,
                 "Invalid CIF format")
@@ -240,7 +240,7 @@ class EnterpriseManager:
         @staticmethod
         def _validate_and_parse_date(date_str: str):
             """Validate DD/MM/YYYY and return a date object"""
-            EnterpriseManager._validate_field(
+            EnterpriseManager.__EnterpriseManager._validate_field(
                 r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$",
                 date_str,
                 "Invalid date format")
