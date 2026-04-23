@@ -10,6 +10,7 @@ from uc3m_consulting.enterprise_management_exception import EnterpriseManagement
 from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
                                                        TEST_DOCUMENTS_STORE_FILE,
                                                        TEST_NUMDOCS_STORE_FILE)
+from uc3m_consulting.json_storage.JsonStore import JsonStore
 from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.attribute.cif_attribute import CifAttribute
 from uc3m_consulting.attribute.acronym_attribute import AcronymAttribute
@@ -47,7 +48,8 @@ class EnterpriseManager:
                                             starting_date=validated_date,
                                             project_budget=validated_budget)
 
-            projects_list = self._load_json_file(PROJECTS_STORE_FILE)
+            json_store = JsonStore()
+            projects_list = json_store.load_json_file(PROJECTS_STORE_FILE)
 
             project_data = new_project.to_json()
             self._raise_if_duplicate(projects_list, project_data, "Duplicated project in projects list")
@@ -82,10 +84,12 @@ class EnterpriseManager:
                 EnterpriseManagementException: On invalid date, file IO errors,
                     missing data, or cryptographic integrity failure.
             """
-            self._validate_and_parse_date(date_str)
+            # self._validate_and_parse_date(date_str)
+            validated_date = DateAttribute(date_str).value
 
             # open documents
-            documents_list = self._load_json_file(TEST_DOCUMENTS_STORE_FILE)
+            json_store = JsonStore()
+            documents_list = json_store.load_json_file(TEST_DOCUMENTS_STORE_FILE)
 
             documents_found_count = 0
 
@@ -108,7 +112,7 @@ class EnterpriseManager:
             # prepare json text
             report = self._create_docs_report(date_str, documents_found_count)
 
-            docs_report_list = self._load_json_file(TEST_NUMDOCS_STORE_FILE)
+            docs_report_list = json_store.load_json_file(TEST_NUMDOCS_STORE_FILE)
             docs_report_list.append(report)
             self._save_json_file(TEST_NUMDOCS_STORE_FILE, docs_report_list)
 
@@ -148,17 +152,17 @@ class EnterpriseManager:
             except json.JSONDecodeError as exception:
                 raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
 
-        @staticmethod
-        def _load_json_file(file_path):
-            """Loads data from json file"""
-            try:
-                with open(file_path, "r", encoding="utf-8", newline="") as file:
-                    data_list = json.load(file)
-            except FileNotFoundError:
-                data_list = []
-            except json.JSONDecodeError as exception:
-                raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
-            return data_list
+        # @staticmethod
+        # def _load_json_file(file_path):
+        #     """Loads data from json file"""
+        #     try:
+        #         with open(file_path, "r", encoding="utf-8", newline="") as file:
+        #             data_list = json.load(file)
+        #     except FileNotFoundError:
+        #         data_list = []
+        #     except json.JSONDecodeError as exception:
+        #         raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
+        #     return data_list
 
     instance = None
 
