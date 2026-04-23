@@ -13,6 +13,7 @@ from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
 from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.attribute.cif_attribute import cif_attribute
 from uc3m_consulting.attribute.acronym_attribute import acronym_attribute
+from uc3m_consulting.attribute.description_attribute import description_attribute
 
 
 class EnterpriseManager:
@@ -43,7 +44,7 @@ class EnterpriseManager:
             """registers a new project"""
             validated_cif = cif_attribute(company_cif)
             validated_acronym = acronym_attribute(project_acronym).value
-            self._validate_field(r"^.{10,30}$", project_description, "Invalid description format")
+            validated_description = description_attribute(project_description).value
             self._validate_field(r"(HR|FINANCE|LEGAL|LOGISTICS)", department, "Invalid department")
             self.validate_starting_date(date)
             self._validate_budget(budget)
@@ -51,7 +52,7 @@ class EnterpriseManager:
 
             new_project = EnterpriseProject(company_cif=validated_cif.attr_value,
                                             project_acronym=validated_acronym,
-                                            project_description=project_description,
+                                            project_description=validated_description,
                                             department=department,
                                             starting_date=date,
                                             project_budget=budget)
