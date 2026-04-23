@@ -3,7 +3,7 @@ from uc3m_consulting.enterprise_management_exception import EnterpriseManagement
 
 class Attribute():
     def __init__(self):
-        self.attr_value = ""
+        self._attr_value = ""
         self.error_message = ""
         self.validation_pattern = r""
 
@@ -16,8 +16,8 @@ class Attribute():
 
     @property
     def value(self):
-        return self.attr_value
+        return self._attr_value
 
     @value.setter
     def value(self,attr_value):
-        self.attr_value = attr_value
+        self._attr_value = attr_value

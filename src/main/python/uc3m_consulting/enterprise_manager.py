@@ -16,6 +16,7 @@ from uc3m_consulting.attribute.acronym_attribute import acronym_attribute
 from uc3m_consulting.attribute.description_attribute import description_attribute
 from uc3m_consulting.attribute.department_attribute import department_attribute
 from uc3m_consulting.attribute.date_attribute import date_attribute
+from uc3m_consulting.attribute.budget_attribute import budget_attribute
 
 class EnterpriseManager:
     class __EnterpriseManager:
@@ -23,17 +24,6 @@ class EnterpriseManager:
         def __init__(self):
             pass
 
-
-        def validate_starting_date(self, t_d):
-            """validates the  date format  using regex"""
-            my_date = self._validate_and_parse_date(t_d)
-
-            if my_date < datetime.now(timezone.utc).date():
-                raise EnterpriseManagementException("Project's date must be today or later.")
-
-            if my_date.year < 2025 or my_date.year > 2050:
-                raise EnterpriseManagementException("Invalid date format")
-            return t_d
         #pylint: disable=too-many-arguments, too-many-positional-arguments
         def register_project(self,
                              company_cif: str,
@@ -48,15 +38,14 @@ class EnterpriseManager:
             validated_description = description_attribute(project_description).value
             validated_department = department_attribute(department).value
             validated_date = date_attribute(date).value
-            self._validate_budget(budget)
-
+            validted_budget = budget_attribute(budget).value
 
             new_project = EnterpriseProject(company_cif=validated_cif.attr_value,
                                             project_acronym=validated_acronym,
                                             project_description=validated_description,
                                             department=validated_department,
                                             starting_date=validated_date,
-                                            project_budget=budget)
+                                            project_budget=validted_budget)
 
             projects_list = self._load_json_file(PROJECTS_STORE_FILE)
 
@@ -69,24 +58,6 @@ class EnterpriseManager:
 
             return new_project.project_id
 
-        @staticmethod
-        def _validate_budget(budget: str) -> float:
-            """Validate budget format and range, and return it as float."""
-            try:
-                budget_value = float(budget)
-            except ValueError as exc:
-                raise EnterpriseManagementException("Invalid budget amount") from exc
-
-            budget_as_string = str(budget_value)
-            if "." in budget_as_string:
-                decimals_length = len(budget_as_string.split('.')[1])
-                if decimals_length > 2:
-                    raise EnterpriseManagementException("Invalid budget amount")
-
-            if budget_value < 50000 or budget_value > 1000000:
-                raise EnterpriseManagementException("Invalid budget amount")
-
-            return budget_value
         @staticmethod
         def _raise_if_duplicate(projects, new_project, error_message: str):
             """Raises exception if duplicate project exists"""
@@ -188,20 +159,6 @@ class EnterpriseManager:
             except json.JSONDecodeError as exception:
                 raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
             return data_list
-
-        @staticmethod
-        def _validate_and_parse_date(date_str: str):
-            """Validate DD/MM/YYYY and return a date object"""
-            EnterpriseManager.__EnterpriseManager._validate_field(
-                r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$",
-                date_str,
-                "Invalid date format")
-
-            try:
-                my_date = datetime.strptime(date_str, "%d/%m/%Y").date()
-            except ValueError as exception:
-                raise EnterpriseManagementException("Invalid date format") from exception
-            return my_date
 
     instance = None
 
