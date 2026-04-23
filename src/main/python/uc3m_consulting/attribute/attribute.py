@@ -1,20 +1,23 @@
+import re
+from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
+
 class Attribute():
     def __init__(self):
-        self._attr_value = ""
-        self._error_message = ""
-        self._validation_pattern = r""
+        self.attr_value = ""
+        self.error_message = ""
+        self.validation_pattern = r""
 
-    def _validate(self,value):
-        myregex= re.compile(self._validation_pattern)
+    def validate(self,value):
+        myregex= re.compile(self.validation_pattern)
         res = myregex.fullmatch(value)
         if not res:
-            raise EnterpriseManagementException(self._error_message)
+            raise EnterpriseManagementException(self.error_message)
         return value
 
     @property
     def value(self):
-        return self._attr_value
+        return self.attr_value
 
     @value.setter
     def value(self,attr_value):
-        self._attr_value = attr_value
+        self.attr_value = attr_value
