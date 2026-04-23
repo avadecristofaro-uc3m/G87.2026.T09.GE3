@@ -193,12 +193,12 @@ class EnterpriseManager:
         @staticmethod
         def _create_docs_report(query_date: str, num_files: int) -> dict:
             """Create the report record for a document query."""
-            now_str = datetime.now(timezone.utc).timestamp()
-            s = {"Querydate": query_date,
-                 "ReportDate": now_str,
+            current_timestamp = datetime.now(timezone.utc).timestamp()
+            report_record = {"Querydate": query_date,
+                 "ReportDate": current_timestamp,
                  "Numfiles": num_files
                  }
-            return s
+            return report_record
 
         @staticmethod
         def _has_valid_document_signature(el: dict) -> bool:
