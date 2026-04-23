@@ -1,14 +1,17 @@
-from .attribute import Attribute
-from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
+"""Class for validating date"""
 from datetime import datetime, timezone
+from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
+from .attribute import Attribute
 
-class date_attribute(Attribute):
+class DateAttribute(Attribute):
+    """Class for date attribute"""
     def __init__(self, attr_value):
         self.validation_pattern = r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$"
         self.error_message = "Invalid date format"
         self._attr_value = self.validate(attr_value)
 
     def validate(self, attr_value):
+        """Validate the date attribute"""
         super().validate(attr_value)
         try:
             my_date = datetime.strptime(attr_value, "%d/%m/%Y").date()
@@ -24,7 +27,5 @@ class date_attribute(Attribute):
 
     @property
     def value(self):
+        """Return the date attribute"""
         return self._attr_value
-
-
-

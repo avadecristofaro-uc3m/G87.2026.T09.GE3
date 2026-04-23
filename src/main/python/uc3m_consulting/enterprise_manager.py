@@ -11,12 +11,12 @@ from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
                                                        TEST_DOCUMENTS_STORE_FILE,
                                                        TEST_NUMDOCS_STORE_FILE)
 from uc3m_consulting.project_document import ProjectDocument
-from uc3m_consulting.attribute.cif_attribute import cif_attribute
-from uc3m_consulting.attribute.acronym_attribute import acronym_attribute
-from uc3m_consulting.attribute.description_attribute import description_attribute
-from uc3m_consulting.attribute.department_attribute import department_attribute
-from uc3m_consulting.attribute.date_attribute import date_attribute
-from uc3m_consulting.attribute.budget_attribute import budget_attribute
+from uc3m_consulting.attribute.cif_attribute import CifAttribute
+from uc3m_consulting.attribute.acronym_attribute import AcronymAttribute
+from uc3m_consulting.attribute.description_attribute import DescriptionAttribute
+from uc3m_consulting.attribute.department_attribute import DepartmentAttribute
+from uc3m_consulting.attribute.date_attribute import DateAttribute
+from uc3m_consulting.attribute.budget_attribute import BudgetAttribute
 
 class EnterpriseManager:
     class __EnterpriseManager:
@@ -33,12 +33,12 @@ class EnterpriseManager:
                              date: str,
                              budget: str):
             """registers a new project"""
-            validated_cif = cif_attribute(company_cif)
-            validated_acronym = acronym_attribute(project_acronym).value
-            validated_description = description_attribute(project_description).value
-            validated_department = department_attribute(department).value
-            validated_date = date_attribute(date).value
-            validted_budget = budget_attribute(budget).value
+            validated_cif = CifAttribute(company_cif)
+            validated_acronym = AcronymAttribute(project_acronym).value
+            validated_description = DescriptionAttribute(project_description).value
+            validated_department = DepartmentAttribute(department).value
+            validated_date = DateAttribute(date).value
+            validted_budget = BudgetAttribute(budget).value
 
             new_project = EnterpriseProject(company_cif=validated_cif.attr_value,
                                             project_acronym=validated_acronym,

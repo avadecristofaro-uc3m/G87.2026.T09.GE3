@@ -1,16 +1,18 @@
-from .attribute import Attribute
+"""Class for budget validation"""
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
+from .attribute import Attribute
 
-class budget_attribute(Attribute):
+class BudgetAttribute(Attribute):
+    """Class for budget attribute"""
     def __init__(self,attr_value):
         self.error_message= "Invalid budget amount"
         self.validation_pattern= r""
         self._attr_value= self.validate(attr_value)
 
-    def validate(self, attr_value):
+    def validate(self, _attr_value):
         """Validate budget format and range, and return it as float."""
         try:
-            budget_value = float(attr_value)
+            budget_value = float(_attr_value)
         except ValueError as exc:
             raise EnterpriseManagementException(self.error_message) from exc
 
@@ -27,4 +29,5 @@ class budget_attribute(Attribute):
 
     @property
     def value(self):
+        """Return budget value"""
         return self._attr_value

@@ -1,9 +1,10 @@
+"""Class for validating the CIF"""
 import re
-from .attribute import Attribute
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
+from .attribute import Attribute
 
-class cif_attribute(Attribute):
-    """class for validating the CIF attribute"""
+class CifAttribute(Attribute):
+    """class for CIF attribute"""
     def __init__(self,attr_value):
         self.error_message = ""
         self.validation_pattern = r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$"
