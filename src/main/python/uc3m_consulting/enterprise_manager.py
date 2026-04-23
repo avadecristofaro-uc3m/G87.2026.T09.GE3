@@ -1,11 +1,7 @@
 """Module """
-# import re
-# import json
 
 from datetime import datetime, timezone
-
 from freezegun import freeze_time
-
 from uc3m_consulting.attribute.query_date_attribute import QueryDateAttribute
 from uc3m_consulting.enterprise_project import EnterpriseProject
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
@@ -21,7 +17,8 @@ from uc3m_consulting.attribute.date_attribute import DateAttribute
 from uc3m_consulting.attribute.budget_attribute import BudgetAttribute
 
 class EnterpriseManager:
-    class __EnterpriseManager:
+    """Singleton Enterprise Manager for providing the methods for managing the orders"""
+    class _EnterpriseManager:
         """Class for providing the methods for managing the orders"""
         def __init__(self):
             pass
@@ -158,9 +155,9 @@ class EnterpriseManager:
 
     instance = None
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls):
         if cls.instance is None:
-            cls.instance = cls.__EnterpriseManager()
+            cls.instance = cls._EnterpriseManager()
         return cls.instance
 
     def __getattr__(self, name):
