@@ -136,9 +136,9 @@ class EnterpriseManager:
         @staticmethod
         def _validate_field(rule: str, field: str, error_message: str):
             """Validates a project field against a regex pattern"""
-            mr = re.compile(rule)
-            res = mr.fullmatch(field)
-            if not res:
+            regex_pattern = re.compile(rule)
+            match_result = regex_pattern.fullmatch(field)
+            if not match_result:
                 raise EnterpriseManagementException(error_message)
 
         def find_docs(self, date_str):
