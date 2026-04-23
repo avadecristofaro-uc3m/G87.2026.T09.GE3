@@ -203,15 +203,15 @@ class EnterpriseManager:
         @staticmethod
         def _has_valid_document_signature(el: dict) -> bool:
             """Returns true if the stored document signature is valid"""
-            time_val = el["register_date"]
-            d_obj = datetime.fromtimestamp(time_val, tz=timezone.utc)
-            with freeze_time(d_obj):
+            register_timestamp = el["register_date"]
+            document_datetime = datetime.fromtimestamp(register_timestamp, tz=timezone.utc)
+            with freeze_time(document_datetime):
                 # check the project id (thanks to freezetime)
                 # if project_id are different then the data has been
                 # manipulated
-                p = ProjectDocument(el["project_id"], el["file_name"])
+                project_document = ProjectDocument(el["project_id"], el["file_name"])
 
-                return p.document_signature == el["document_signature"]
+                return project_document.document_signature == el["document_signature"]
 
         @staticmethod
         def _save_json_file(file_path, data_list):
