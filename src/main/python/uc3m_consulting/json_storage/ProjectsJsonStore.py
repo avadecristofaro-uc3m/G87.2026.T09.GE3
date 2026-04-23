@@ -1,4 +1,5 @@
 """Module for managing the Json Projects store"""
+from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
 from uc3m_consulting.json_storage.JsonStore import JsonStore
 from uc3m_consulting.enterprise_manager_config import PROJECTS_STORE_FILE
 
@@ -19,3 +20,9 @@ class ProjectsJsonStore(JsonStore):
         projects = self.load()
         projects.append(new_project)
         self.save(projects)
+
+    def raise_if_duplicate(self, projects, new_project, error_message: str):
+        """Raises exception if duplicate project exists"""
+        for project in projects:
+            if project == new_project:
+                raise EnterpriseManagementException(error_message)
