@@ -9,11 +9,7 @@ from freezegun import freeze_time
 from uc3m_consulting.attribute.query_date_attribute import QueryDateAttribute
 from uc3m_consulting.enterprise_project import EnterpriseProject
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
-# from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
-#                                                        TEST_DOCUMENTS_STORE_FILE,
-#                                                        TEST_NUMDOCS_STORE_FILE)
 from uc3m_consulting.json_storage.DocumentsJsonStore import DocumentsJsonStore
-# from uc3m_consulting.json_storage.JsonStore import JsonStore
 from uc3m_consulting.json_storage.NumDocsJsonStore import NumDocsJsonStore
 from uc3m_consulting.json_storage.ProjectsJsonStore import ProjectsJsonStore
 from uc3m_consulting.project_document import ProjectDocument
@@ -39,25 +35,17 @@ class EnterpriseManager:
                              date: str,
                              budget: str):
             """registers a new project"""
-            validated_cif = CifAttribute(company_cif)
-            validated_acronym = AcronymAttribute(project_acronym).value
-            validated_description = DescriptionAttribute(project_description).value
-            validated_department = DepartmentAttribute(department).value
-            validated_date = DateAttribute(date).value
-            validated_budget = BudgetAttribute(budget).value
-
-            new_project = EnterpriseProject(company_cif=validated_cif.attr_value,
-                                            project_acronym=validated_acronym,
-                                            project_description=validated_description,
-                                            department=validated_department,
-                                            starting_date=validated_date,
-                                            project_budget=validated_budget)
+            new_project = self._create_project(
+                company_cif,
+                project_acronym,
+                project_description,
+                department,
+                date,
+                budget
+            )
 
             projects_store = ProjectsJsonStore()
-            # projects_list = projects_store.load()
             project_data = new_project.to_json()
-            # projects_store.raise_if_duplicate(projects_list, project_data,
-            #                          "Duplicated project in projects list")
             projects_store.add_to_store(project_data)
 
             return new_project.project_id
@@ -83,7 +71,6 @@ class EnterpriseManager:
             validated_date = QueryDateAttribute(date_str).value
 
             # open documents
-            # json_store = JsonStore()
             documents_store = DocumentsJsonStore()
             documents_list = documents_store.load()
 
@@ -96,7 +83,7 @@ class EnterpriseManager:
                 # string conversion for easy match
                 doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
 
-                if doc_date_str == date_str:
+                if doc_date_str == validated_date:
                     if self._has_valid_document_signature(doc_entry):
                         documents_found_count = documents_found_count + 1
                     else:
@@ -106,11 +93,7 @@ class EnterpriseManager:
                 raise EnterpriseManagementException("No documents found")
 
             # prepare json text
-            report = self._create_docs_report(date_str, documents_found_count)
-
-            # docs_report_list = json_store.load_json_file(TEST_NUMDOCS_STORE_FILE)
-            # docs_report_list.append(report)
-            # json_store.save_json_file(TEST_NUMDOCS_STORE_FILE, docs_report_list)
+            report = self._create_docs_report(validated_date, documents_found_count)
             num_docs_store = NumDocsJsonStore()
             num_docs_store.add_to_store(report)
 
@@ -138,6 +121,32 @@ class EnterpriseManager:
                 project_document = ProjectDocument(el["project_id"], el["file_name"])
 
                 return project_document.document_signature == el["document_signature"]
+
+        @staticmethod
+        def _create_project(
+                company_cif: str,
+                project_acronym: str,
+                project_description: str,
+                department: str,
+                date: str,
+                budget: str
+        ) -> EnterpriseProject:
+            """Validate inputs and create a project"""
+            validated_cif = CifAttribute(company_cif)
+            validated_acronym = AcronymAttribute(project_acronym).value
+            validated_description = DescriptionAttribute(project_description).value
+            validated_department = DepartmentAttribute(department).value
+            validated_date = DateAttribute(date).value
+            validated_budget = BudgetAttribute(budget).value
+
+            return EnterpriseProject(
+                company_cif=validated_cif.attr_value,
+                project_acronym=validated_acronym,
+                project_description=validated_description,
+                department=validated_department,
+                starting_date=validated_date,
+                project_budget=validated_budget
+            )
 
     instance = None
 
