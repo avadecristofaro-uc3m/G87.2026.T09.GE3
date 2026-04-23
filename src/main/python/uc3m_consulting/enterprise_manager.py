@@ -219,10 +219,10 @@ class EnterpriseManager:
             try:
                 with open(file_path, "w", encoding="utf-8", newline="") as file:
                     json.dump(data_list, file, indent=2)
-            except FileNotFoundError as ex:
-                raise EnterpriseManagementException("Wrong file  or file path") from ex
-            except json.JSONDecodeError as ex:
-                raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
+            except FileNotFoundError as exception:
+                raise EnterpriseManagementException("Wrong file  or file path") from exception
+            except json.JSONDecodeError as exception:
+                raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
 
         @staticmethod
         def _load_json_file(file_path):
