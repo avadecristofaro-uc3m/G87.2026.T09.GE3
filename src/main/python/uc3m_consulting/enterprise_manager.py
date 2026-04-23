@@ -5,6 +5,8 @@ import json
 from datetime import datetime, timezone
 
 from freezegun import freeze_time
+
+from uc3m_consulting.attribute.query_date_attribute import QueryDateAttribute
 from uc3m_consulting.enterprise_project import EnterpriseProject
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
 from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
@@ -85,7 +87,7 @@ class EnterpriseManager:
                     missing data, or cryptographic integrity failure.
             """
             # self._validate_and_parse_date(date_str)
-            validated_date = DateAttribute(date_str).value
+            validated_date = QueryDateAttribute(date_str).value
 
             # open documents
             json_store = JsonStore()
