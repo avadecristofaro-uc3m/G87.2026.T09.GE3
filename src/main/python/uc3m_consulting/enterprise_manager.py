@@ -74,28 +74,14 @@ class EnterpriseManager:
             documents_store = DocumentsJsonStore()
             documents_list = documents_store.load()
 
+            # loops through and finds documents
             documents_found_count = self._count_valid_documents(validated_date, documents_list)
-
-            # loop to find
-            # for doc_entry in documents_list:
-            #     time_val = doc_entry["register_date"]
-            #
-            #     # string conversion for easy match
-            #     doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
-            #
-            #     if doc_date_str == validated_date:
-            #         if self._has_valid_document_signature(doc_entry):
-            #             documents_found_count = documents_found_count + 1
-            #         else:
-            #             raise EnterpriseManagementException("Inconsistent document signature")
 
             if documents_found_count == 0:
                 raise EnterpriseManagementException("No documents found")
 
             # prepare json text
-            report = self._create_docs_report(validated_date, documents_found_count)
-            num_docs_store = NumDocsJsonStore()
-            num_docs_store.add_to_store(report)
+            self._save_docs_report(validated_date, documents_found_count)
 
             return documents_found_count
 
@@ -110,17 +96,17 @@ class EnterpriseManager:
             return report_record
 
         @staticmethod
-        def _has_valid_document_signature(el: dict) -> bool:
+        def _has_valid_document_signature(document_entry: dict) -> bool:
             """Returns true if the stored document signature is valid"""
-            register_timestamp = el["register_date"]
+            register_timestamp = document_entry["register_date"]
             document_datetime = datetime.fromtimestamp(register_timestamp, tz=timezone.utc)
             with freeze_time(document_datetime):
                 # check the project id (thanks to freezetime)
                 # if project_id are different then the data has been
                 # manipulated
-                project_document = ProjectDocument(el["project_id"], el["file_name"])
+                project_document = ProjectDocument(document_entry["project_id"], document_entry["file_name"])
 
-                return project_document.document_signature == el["document_signature"]
+                return project_document.document_signature == document_entry["document_signature"]
 
         @staticmethod
         def _create_project(
@@ -163,6 +149,12 @@ class EnterpriseManager:
                         raise EnterpriseManagementException("Inconsistent document signature")
 
             return documents_found_count
+
+        def _save_docs_report(self, validated_date: str, documents_found_count: int):
+            """Create and persist the document report"""
+            report = self._create_docs_report(validated_date, documents_found_count)
+            num_docs_store = NumDocsJsonStore()
+            num_docs_store.add_to_store(report)
 
     instance = None
 

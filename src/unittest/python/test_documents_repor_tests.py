@@ -14,7 +14,7 @@ from uc3m_consulting import (TEST_NUMDOCS_STORE_FILE,
 class TestDocumentsReporTest(TestCase):
     """Class for testing deliver_product"""
     def setUp(self):
-        """ inicializo el entorno de prueba """
+        """ inicializo document_entry entorno de prueba """
         if os.path.exists(TEST_NUMDOCS_STORE_FILE):
             remove(TEST_NUMDOCS_STORE_FILE)
 
