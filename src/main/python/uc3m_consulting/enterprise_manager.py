@@ -161,34 +161,34 @@ class EnterpriseManager:
             self._validate_and_parse_date(date_str)
 
             # open documents
-            d_list = self._load_json_file(TEST_DOCUMENTS_STORE_FILE)
+            documents_list = self._load_json_file(TEST_DOCUMENTS_STORE_FILE)
 
-            rst = 0
+            documents_found_count = 0
 
             # loop to find
-            for el in d_list:
-                time_val = el["register_date"]
+            for doc_entry in documents_list:
+                time_val = doc_entry["register_date"]
 
                 # string conversion for easy match
                 doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
 
                 if doc_date_str == date_str:
-                    if self._has_valid_document_signature(el):
-                        rst = rst + 1
+                    if self._has_valid_document_signature(doc_entry):
+                        documents_found_count = documents_found_count + 1
                     else:
                         raise EnterpriseManagementException("Inconsistent document signature")
 
-            if rst == 0:
+            if documents_found_count == 0:
                 raise EnterpriseManagementException("No documents found")
 
             # prepare json text
-            report = self._create_docs_report(date_str, rst)
+            report = self._create_docs_report(date_str, documents_found_count)
 
-            dl = self._load_json_file(TEST_NUMDOCS_STORE_FILE)
-            dl.append(report)
-            self._save_json_file(TEST_NUMDOCS_STORE_FILE, dl)
+            docs_report_list = self._load_json_file(TEST_NUMDOCS_STORE_FILE)
+            docs_report_list.append(report)
+            self._save_json_file(TEST_NUMDOCS_STORE_FILE, docs_report_list)
 
-            return rst
+            return documents_found_count
 
         @staticmethod
         def _create_docs_report(query_date: str, num_files: int) -> dict:
