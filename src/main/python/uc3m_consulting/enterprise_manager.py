@@ -38,14 +38,14 @@ class EnterpriseManager:
             validated_description = DescriptionAttribute(project_description).value
             validated_department = DepartmentAttribute(department).value
             validated_date = DateAttribute(date).value
-            validted_budget = BudgetAttribute(budget).value
+            validated_budget = BudgetAttribute(budget).value
 
             new_project = EnterpriseProject(company_cif=validated_cif.attr_value,
                                             project_acronym=validated_acronym,
                                             project_description=validated_description,
                                             department=validated_department,
                                             starting_date=validated_date,
-                                            project_budget=validted_budget)
+                                            project_budget=validated_budget)
 
             projects_list = self._load_json_file(PROJECTS_STORE_FILE)
 
