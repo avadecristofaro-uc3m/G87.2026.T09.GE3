@@ -15,7 +15,7 @@ from uc3m_consulting.attribute.cif_attribute import cif_attribute
 from uc3m_consulting.attribute.acronym_attribute import acronym_attribute
 from uc3m_consulting.attribute.description_attribute import description_attribute
 from uc3m_consulting.attribute.department_attribute import department_attribute
-
+from uc3m_consulting.attribute.date_attribute import date_attribute
 
 class EnterpriseManager:
     class __EnterpriseManager:
@@ -47,7 +47,7 @@ class EnterpriseManager:
             validated_acronym = acronym_attribute(project_acronym).value
             validated_description = description_attribute(project_description).value
             validated_department = department_attribute(department).value
-            self.validate_starting_date(date)
+            validated_date = date_attribute(date).value
             self._validate_budget(budget)
 
 
@@ -55,7 +55,7 @@ class EnterpriseManager:
                                             project_acronym=validated_acronym,
                                             project_description=validated_description,
                                             department=validated_department,
-                                            starting_date=date,
+                                            starting_date=validated_date,
                                             project_budget=budget)
 
             projects_list = self._load_json_file(PROJECTS_STORE_FILE)
