@@ -51,30 +51,15 @@ class EnterpriseManager:
                                             starting_date=validated_date,
                                             project_budget=validated_budget)
 
-            # json_store = JsonStore()
-            # projects_list = json_store.load_json_file(PROJECTS_STORE_FILE)
-            #
-            # self._raise_if_duplicate(projects_list, project_data, "Duplicated project in projects list")
-            #
-            # projects_list.append(project_data)
-            #
-            # json_store.save_json_file(PROJECTS_STORE_FILE, projects_list)
             projects_store = ProjectsJsonStore()
-            projects_list = projects_store.load()
+            # projects_list = projects_store.load()
             project_data = new_project.to_json()
-            projects_store.raise_if_duplicate(projects_list, project_data,
-                                     "Duplicated project in projects list")
-
-            projects_store.add(project_data)
+            # projects_store.raise_if_duplicate(projects_list, project_data,
+            #                          "Duplicated project in projects list")
+            projects_store.add_to_store(project_data)
 
             return new_project.project_id
 
-        # @staticmethod
-        # def _raise_if_duplicate(projects, new_project, error_message: str):
-        #     """Raises exception if duplicate project exists"""
-        #     for project in projects:
-        #         if project == new_project:
-        #             raise EnterpriseManagementException(error_message)
 
         def find_docs(self, date_str):
             """
@@ -97,7 +82,7 @@ class EnterpriseManager:
 
             # open documents
             json_store = JsonStore()
-            documents_list = json_store.load_json_file(TEST_DOCUMENTS_STORE_FILE)
+            documents_list = json_store.load_json_file()
 
             documents_found_count = 0
 

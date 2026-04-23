@@ -6,23 +6,32 @@ from uc3m_consulting.enterprise_manager_config import PROJECTS_STORE_FILE
 
 class ProjectsJsonStore(JsonStore):
     """Handles persistence of projects"""
+    _FILE_PATH = PROJECTS_STORE_FILE
+    # _instance = None
 
     def load(self):
-        """Load all projects"""
-        return super().load_json_file(PROJECTS_STORE_FILE)
+        """Load projects"""
+        return super().load_json_file()
 
-    def save(self, projects_list):
+    def save(self):
         """Save all projects"""
-        super().save_json_file(PROJECTS_STORE_FILE, projects_list)
+        super().save_json_file()
 
-    def add(self, new_project: dict):
-        """Add a new project and persist"""
+    def add_to_store(self, new_project: dict):
+        """Add a new project after duplicate validation and persist"""
         projects = self.load()
+        self.raise_if_duplicate(projects, new_project, "Project already exists")
         projects.append(new_project)
-        self.save(projects)
+        self.save()
 
-    def raise_if_duplicate(self, projects, new_project, error_message: str):
+    @staticmethod
+    def raise_if_duplicate(projects, new_project, error_message: str):
         """Raises exception if duplicate project exists"""
         for project in projects:
             if project == new_project:
                 raise EnterpriseManagementException(error_message)
+
+    def save_projects(self, projects_list):
+        """Replace all projects and persist"""
+        self._data_list = projects_list
+        self.save()
