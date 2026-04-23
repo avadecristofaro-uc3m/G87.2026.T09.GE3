@@ -74,20 +74,20 @@ class EnterpriseManager:
             documents_store = DocumentsJsonStore()
             documents_list = documents_store.load()
 
-            documents_found_count = 0
+            documents_found_count = self._count_valid_documents(validated_date, documents_list)
 
             # loop to find
-            for doc_entry in documents_list:
-                time_val = doc_entry["register_date"]
-
-                # string conversion for easy match
-                doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
-
-                if doc_date_str == validated_date:
-                    if self._has_valid_document_signature(doc_entry):
-                        documents_found_count = documents_found_count + 1
-                    else:
-                        raise EnterpriseManagementException("Inconsistent document signature")
+            # for doc_entry in documents_list:
+            #     time_val = doc_entry["register_date"]
+            #
+            #     # string conversion for easy match
+            #     doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
+            #
+            #     if doc_date_str == validated_date:
+            #         if self._has_valid_document_signature(doc_entry):
+            #             documents_found_count = documents_found_count + 1
+            #         else:
+            #             raise EnterpriseManagementException("Inconsistent document signature")
 
             if documents_found_count == 0:
                 raise EnterpriseManagementException("No documents found")
@@ -147,6 +147,22 @@ class EnterpriseManager:
                 starting_date=validated_date,
                 project_budget=validated_budget
             )
+
+        def _count_valid_documents(self, validated_date: str, documents_list: list) -> int:
+            """Count valid documents matching a query date"""
+            documents_found_count = 0
+
+            for doc_entry in documents_list:
+                time_val = doc_entry["register_date"]
+                doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
+
+                if doc_date_str == validated_date:
+                    if self._has_valid_document_signature(doc_entry):
+                        documents_found_count += 1
+                    else:
+                        raise EnterpriseManagementException("Inconsistent document signature")
+
+            return documents_found_count
 
     instance = None
 
