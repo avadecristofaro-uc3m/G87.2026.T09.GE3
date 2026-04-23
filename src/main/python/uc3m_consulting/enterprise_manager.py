@@ -1,6 +1,6 @@
 """Module """
-import re
-import json
+# import re
+# import json
 
 from datetime import datetime, timezone
 
@@ -9,10 +9,12 @@ from freezegun import freeze_time
 from uc3m_consulting.attribute.query_date_attribute import QueryDateAttribute
 from uc3m_consulting.enterprise_project import EnterpriseProject
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
-from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
-                                                       TEST_DOCUMENTS_STORE_FILE,
-                                                       TEST_NUMDOCS_STORE_FILE)
-from uc3m_consulting.json_storage.JsonStore import JsonStore
+# from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
+#                                                        TEST_DOCUMENTS_STORE_FILE,
+#                                                        TEST_NUMDOCS_STORE_FILE)
+from uc3m_consulting.json_storage.DocumentsJsonStore import DocumentsJsonStore
+# from uc3m_consulting.json_storage.JsonStore import JsonStore
+from uc3m_consulting.json_storage.NumDocsJsonStore import NumDocsJsonStore
 from uc3m_consulting.json_storage.ProjectsJsonStore import ProjectsJsonStore
 from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.attribute.cif_attribute import CifAttribute
@@ -81,8 +83,9 @@ class EnterpriseManager:
             validated_date = QueryDateAttribute(date_str).value
 
             # open documents
-            json_store = JsonStore()
-            documents_list = json_store.load_json_file()
+            # json_store = JsonStore()
+            documents_store = DocumentsJsonStore()
+            documents_list = documents_store.load()
 
             documents_found_count = 0
 
@@ -105,9 +108,11 @@ class EnterpriseManager:
             # prepare json text
             report = self._create_docs_report(date_str, documents_found_count)
 
-            docs_report_list = json_store.load_json_file(TEST_NUMDOCS_STORE_FILE)
-            docs_report_list.append(report)
-            json_store.save_json_file(TEST_NUMDOCS_STORE_FILE, docs_report_list)
+            # docs_report_list = json_store.load_json_file(TEST_NUMDOCS_STORE_FILE)
+            # docs_report_list.append(report)
+            # json_store.save_json_file(TEST_NUMDOCS_STORE_FILE, docs_report_list)
+            num_docs_store = NumDocsJsonStore()
+            num_docs_store.add_to_store(report)
 
             return documents_found_count
 

@@ -20,7 +20,7 @@ class ProjectsJsonStore(JsonStore):
     def add_to_store(self, new_project: dict):
         """Add a new project after duplicate validation and persist"""
         projects = self.load()
-        self.raise_if_duplicate(projects, new_project, "Project already exists")
+        self.raise_if_duplicate(projects, new_project, "Duplicated project in projects list")
         projects.append(new_project)
         self.save()
 
