@@ -14,6 +14,7 @@ from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.attribute.cif_attribute import cif_attribute
 from uc3m_consulting.attribute.acronym_attribute import acronym_attribute
 from uc3m_consulting.attribute.description_attribute import description_attribute
+from uc3m_consulting.attribute.department_attribute import department_attribute
 
 
 class EnterpriseManager:
@@ -45,7 +46,7 @@ class EnterpriseManager:
             validated_cif = cif_attribute(company_cif)
             validated_acronym = acronym_attribute(project_acronym).value
             validated_description = description_attribute(project_description).value
-            self._validate_field(r"(HR|FINANCE|LEGAL|LOGISTICS)", department, "Invalid department")
+            validated_department = department_attribute(department).value
             self.validate_starting_date(date)
             self._validate_budget(budget)
 
@@ -53,7 +54,7 @@ class EnterpriseManager:
             new_project = EnterpriseProject(company_cif=validated_cif.attr_value,
                                             project_acronym=validated_acronym,
                                             project_description=validated_description,
-                                            department=department,
+                                            department=validated_department,
                                             starting_date=date,
                                             project_budget=budget)
 
@@ -92,14 +93,6 @@ class EnterpriseManager:
             for project in projects:
                 if project == new_project:
                     raise EnterpriseManagementException(error_message)
-
-        @staticmethod
-        def _validate_field(rule: str, field: str, error_message: str):
-            """Validates a project field against a regex pattern"""
-            regex_pattern = re.compile(rule)
-            match_result = regex_pattern.fullmatch(field)
-            if not match_result:
-                raise EnterpriseManagementException(error_message)
 
         def find_docs(self, date_str):
             """
