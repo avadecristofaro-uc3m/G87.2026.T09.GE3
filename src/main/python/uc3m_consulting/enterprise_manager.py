@@ -97,14 +97,14 @@ class EnterpriseManager:
                                             starting_date=date,
                                             project_budget=budget)
 
-            t_l = self._load_json_file(PROJECTS_STORE_FILE)
+            projects_list = self._load_json_file(PROJECTS_STORE_FILE)
 
             project_data = new_project.to_json()
-            self._raise_if_duplicate(t_l, project_data, "Duplicated project in projects list")
+            self._raise_if_duplicate(projects_list, project_data, "Duplicated project in projects list")
 
-            t_l.append(project_data)
+            projects_list.append(project_data)
 
-            self._save_json_file(PROJECTS_STORE_FILE, t_l)
+            self._save_json_file(PROJECTS_STORE_FILE, projects_list)
 
             return new_project.project_id
 
