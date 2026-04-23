@@ -229,12 +229,12 @@ class EnterpriseManager:
             """Loads data from json file"""
             try:
                 with open(file_path, "r", encoding="utf-8", newline="") as file:
-                    dl = json.load(file)
+                    data_list = json.load(file)
             except FileNotFoundError:
-                dl = []
-            except json.JSONDecodeError as ex:
-                raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
-            return dl
+                data_list = []
+            except json.JSONDecodeError as exception:
+                raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
+            return data_list
 
         @staticmethod
         def _validate_and_parse_date(date_str: str):
