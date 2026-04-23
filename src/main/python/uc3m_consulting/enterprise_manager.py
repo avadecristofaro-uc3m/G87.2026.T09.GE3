@@ -58,7 +58,7 @@ class EnterpriseManager:
 
             projects_list.append(project_data)
 
-            self._save_json_file(PROJECTS_STORE_FILE, projects_list)
+            json_store.save_json_file(PROJECTS_STORE_FILE, projects_list)
 
             return new_project.project_id
 
@@ -86,7 +86,6 @@ class EnterpriseManager:
                 EnterpriseManagementException: On invalid date, file IO errors,
                     missing data, or cryptographic integrity failure.
             """
-            # self._validate_and_parse_date(date_str)
             validated_date = QueryDateAttribute(date_str).value
 
             # open documents
@@ -116,7 +115,7 @@ class EnterpriseManager:
 
             docs_report_list = json_store.load_json_file(TEST_NUMDOCS_STORE_FILE)
             docs_report_list.append(report)
-            self._save_json_file(TEST_NUMDOCS_STORE_FILE, docs_report_list)
+            json_store.save_json_file(TEST_NUMDOCS_STORE_FILE, docs_report_list)
 
             return documents_found_count
 
@@ -143,16 +142,16 @@ class EnterpriseManager:
 
                 return project_document.document_signature == el["document_signature"]
 
-        @staticmethod
-        def _save_json_file(file_path, data_list):
-            """Saves data to json file"""
-            try:
-                with open(file_path, "w", encoding="utf-8", newline="") as file:
-                    json.dump(data_list, file, indent=2)
-            except FileNotFoundError as exception:
-                raise EnterpriseManagementException("Wrong file  or file path") from exception
-            except json.JSONDecodeError as exception:
-                raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
+        # @staticmethod
+        # def _save_json_file(file_path, data_list):
+        #     """Saves data to json file"""
+        #     try:
+        #         with open(file_path, "w", encoding="utf-8", newline="") as file:
+        #             json.dump(data_list, file, indent=2)
+        #     except FileNotFoundError as exception:
+        #         raise EnterpriseManagementException("Wrong file  or file path") from exception
+        #     except json.JSONDecodeError as exception:
+        #         raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
 
         # @staticmethod
         # def _load_json_file(file_path):
