@@ -246,8 +246,8 @@ class EnterpriseManager:
 
             try:
                 my_date = datetime.strptime(date_str, "%d/%m/%Y").date()
-            except ValueError as ex:
-                raise EnterpriseManagementException("Invalid date format") from ex
+            except ValueError as exception:
+                raise EnterpriseManagementException("Invalid date format") from exception
             return my_date
 
     instance = None
