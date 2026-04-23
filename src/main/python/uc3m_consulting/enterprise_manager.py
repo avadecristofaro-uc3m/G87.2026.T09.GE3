@@ -112,20 +112,20 @@ class EnterpriseManager:
         def _validate_budget(budget: str) -> float:
             """Validate budget format and range, and return it as float."""
             try:
-                f_bdgt = float(budget)
+                budget_value = float(budget)
             except ValueError as exc:
                 raise EnterpriseManagementException("Invalid budget amount") from exc
 
-            n_str = str(f_bdgt)
-            if "." in n_str:
-                decimales = len(n_str.split('.')[1])
-                if decimales > 2:
+            budget_as_string = str(budget_value)
+            if "." in budget_as_string:
+                decimals_length = len(budget_as_string.split('.')[1])
+                if decimals_length > 2:
                     raise EnterpriseManagementException("Invalid budget amount")
 
-            if f_bdgt < 50000 or f_bdgt > 1000000:
+            if budget_value < 50000 or budget_value > 1000000:
                 raise EnterpriseManagementException("Invalid budget amount")
 
-            return f_bdgt
+            return budget_value
         @staticmethod
         def _raise_if_duplicate(projects, new_project, error_message: str):
             """Raises exception if duplicate project exists"""
