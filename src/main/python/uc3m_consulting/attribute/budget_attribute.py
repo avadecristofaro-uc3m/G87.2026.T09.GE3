@@ -4,7 +4,8 @@ from .attribute import Attribute
 
 class BudgetAttribute(Attribute):
     """Class for budget attribute"""
-    def __init__(self,attr_value):
+    def __init__(self, attr_value):
+        super().__init__()
         self.error_message= "Invalid budget amount"
         self.validation_pattern= r""
         self._attr_value= self.validate(attr_value)

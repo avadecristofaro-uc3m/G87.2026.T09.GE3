@@ -5,7 +5,7 @@ from .attribute import Attribute
 
 class CifAttribute(Attribute):
     """class for CIF attribute"""
-    def __init__(self,attr_value):
+    def __init__(self, attr_value):
         self.error_message = ""
         self.validation_pattern = r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$"
         self.attr_value = self.validate(attr_value)

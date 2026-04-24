@@ -7,9 +7,10 @@ class QueryDateAttribute(Attribute):
     """Class for validating query dates"""
 
     def __init__(self, attr_value):
-        self.validation_pattern = r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$"
+        super().__init__()
         self.error_message = "Invalid date format"
         self._attr_value = self.validate(attr_value)
+        self.validation_pattern = r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$"
 
     def validate(self, attr_value):
         """Validate query date format and calendar correctness"""
