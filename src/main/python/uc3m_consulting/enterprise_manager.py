@@ -101,7 +101,9 @@ class EnterpriseManager:
                 # check the project id (thanks to freezetime)
                 # if project_id are different then the data has been
                 # manipulated
-                project_document = ProjectDocument(document_entry["project_id"], document_entry["file_name"])
+                project_document = ProjectDocument(
+                    document_entry["project_id"],
+                    document_entry["file_name"])
 
                 return project_document.document_signature == document_entry["document_signature"]
 
