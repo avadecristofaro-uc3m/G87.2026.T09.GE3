@@ -17,11 +17,11 @@ class ProjectsJsonStore(JsonStore):
         """Save all projects"""
         super().save_json_file()
 
-    def add_to_store(self, new_project: dict):
+    def add_to_store(self, new_item: dict):
         """Add a new project after duplicate validation and persist"""
         projects = self.load()
-        self.raise_if_duplicate(projects, new_project, "Duplicated project in projects list")
-        projects.append(new_project)
+        self.raise_if_duplicate(projects, new_item, "Duplicated project in projects list")
+        projects.append(new_item)
         self.save()
 
     @staticmethod
