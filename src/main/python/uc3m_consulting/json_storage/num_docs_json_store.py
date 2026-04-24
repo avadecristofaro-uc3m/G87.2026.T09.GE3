@@ -17,10 +17,6 @@ class NumDocsJsonStore(JsonStore):
         """Save all reports"""
         super().save_json_file()
 
-    def add_to_store(self, new_report: dict):
-        """Add a new report and persist"""
-        super().add_to_store(new_report)
-
     def save_reports(self, reports_list):
         """Replace all reports and persist"""
         self._data_list = reports_list

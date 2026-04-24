@@ -67,17 +67,14 @@ class EnterpriseManager:
             """
             validated_date = QueryDateAttribute(date_str).value
 
-            # open documents
             documents_store = DocumentsJsonStore()
             documents_list = documents_store.load()
 
-            # loops through and finds documents
             documents_found_count = self._count_valid_documents(validated_date, documents_list)
 
             if documents_found_count == 0:
                 raise EnterpriseManagementException("No documents found")
 
-            # prepare json text
             self._save_docs_report(validated_date, documents_found_count)
 
             return documents_found_count
@@ -98,9 +95,7 @@ class EnterpriseManager:
             register_timestamp = document_entry["register_date"]
             document_datetime = datetime.fromtimestamp(register_timestamp, tz=timezone.utc)
             with freeze_time(document_datetime):
-                # check the project id (thanks to freezetime)
-                # if project_id are different then the data has been
-                # manipulated
+
                 project_document = ProjectDocument(
                     document_entry["project_id"],
                     document_entry["file_name"])
