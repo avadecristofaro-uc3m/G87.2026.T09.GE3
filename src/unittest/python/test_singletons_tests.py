@@ -3,6 +3,7 @@ from unittest import TestCase
 from uc3m_consulting import EnterpriseManager
 from uc3m_consulting.json_storage.projects_json_store import ProjectsJsonStore
 from uc3m_consulting.json_storage.documents_json_store import DocumentsJsonStore
+from uc3m_consulting.json_storage.num_docs_json_store import NumDocsJsonStore
 
 class SingletonTest(TestCase):
     """Class for dealing with Singletons"""
@@ -29,6 +30,14 @@ class SingletonTest(TestCase):
         documents_store3 = DocumentsJsonStore()
         self.assertEqual(documents_store1, documents_store2)
         self.assertEqual(documents_store2, documents_store3)
+
+    def test_num_documents_json_store_singleton(self):
+        """Validate that documents JSON store class is instantiated as a Singleton"""
+        num_documents_store1 = NumDocsJsonStore()
+        num_documents_store2 = NumDocsJsonStore()
+        num_documents_store3 = NumDocsJsonStore()
+        self.assertEqual(num_documents_store1, num_documents_store2)
+        self.assertEqual(num_documents_store2, num_documents_store3)
 
 # if __name__ == '__main__':
 #     unittest.main()
