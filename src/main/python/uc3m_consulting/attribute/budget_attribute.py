@@ -1,6 +1,6 @@
 """Class for budget validation"""
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
-from .attribute import Attribute
+from uc3m_consulting.attribute.attribute import Attribute
 
 class BudgetAttribute(Attribute):
     """Class for budget attribute"""
