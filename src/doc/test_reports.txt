@@ -1,0 +1,41 @@
+PyBuilder version 0.13.18
+Build started at 2026-04-24 23:07:18
+------------------------------------------------------------
+[INFO]  Building GE3 version 1.0.dev0
+[INFO]  Executing build in c:\users\adria\softwaredevelopment\g87.2026.t09.ge3
+[INFO]  Going to execute task publish
+[INFO]  Processing plugin packages 'coverage>=6.0' to be installed with {'upgrade': True}
+[INFO]  Processing plugin packages 'unittest-xml-reporting>=3.0.4' to be installed with {'upgrade': True}
+[INFO]  Creating target 'build' VEnv in 'c:\users\adria\softwaredevelopment\g87.2026.t09.ge3\target\venv\build\cpython-3.11.5.final.0'
+[INFO]  Creating target 'test' VEnv in 'c:\users\adria\softwaredevelopment\g87.2026.t09.ge3\target\venv\test\cpython-3.11.5.final.0'
+[INFO]  Requested coverage for tasks: pybuilder.plugins.python.unittest_plugin:run_unit_tests
+[INFO]  Running unit tests
+[INFO]  Executing unit tests from Python modules in c:\users\adria\softwaredevelopment\g87.2026.t09.ge3\src\unittest\python
+[INFO]  Executed 12 unit tests
+[INFO]  All unit tests passed.
+[INFO]  Building distribution in c:\users\adria\softwaredevelopment\g87.2026.t09.ge3\target\dist\ge3-1.0.dev0
+[INFO]  Copying scripts to c:\users\adria\softwaredevelopment\g87.2026.t09.ge3\target\dist\ge3-1.0.dev0\scripts
+[INFO]  Collecting coverage information for 'pybuilder.plugins.python.unittest_plugin:run_unit_tests'
+[WARN]  ut_coverage_branch_threshold_warn is 0 and branch coverage will not be checked
+[WARN]  ut_coverage_branch_partial_threshold_warn is 0 and partial branch coverage will not be checked
+[INFO]  Running unit tests
+[INFO]  Executing unit tests from Python modules in c:\users\adria\softwaredevelopment\g87.2026.t09.ge3\src\unittest\python
+[INFO]  Executed 12 unit tests
+[INFO]  All unit tests passed.
+[INFO]  Overall pybuilder.plugins.python.unittest_plugin.run_unit_tests coverage is 88%
+[INFO]  Overall pybuilder.plugins.python.unittest_plugin.run_unit_tests branch coverage is 88%
+[INFO]  Overall pybuilder.plugins.python.unittest_plugin.run_unit_tests partial branch coverage is 88%
+[INFO]  Overall GE3 coverage is 88%
+[INFO]  Overall GE3 branch coverage is 88%
+[INFO]  Overall GE3 partial branch coverage is 88%
+------------------------------------------------------------
+BUILD SUCCESSFUL
+------------------------------------------------------------
+Build Summary
+             Project: GE3
+             Version: 1.0.dev0
+      Base directory: c:\users\adria\softwaredevelopment\g87.2026.t09.ge3
+        Environments: 
+               Tasks: prepare [8959 ms] compile_sources [0 ms] run_unit_tests [1851 ms] package [58 ms] run_integration_tests [0 ms] verify [0 ms] coverage [4649 ms] publish [0 ms]
+Build finished at 2026-04-24 23:07:38
+Build took 19 seconds (19129 ms)
