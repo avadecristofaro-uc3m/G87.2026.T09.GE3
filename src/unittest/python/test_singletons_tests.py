@@ -1,6 +1,7 @@
 """Module"""
 from unittest import TestCase
 from uc3m_consulting import EnterpriseManager
+from uc3m_consulting.json_storage.projects_json_store import ProjectsJsonStore
 
 
 class SingletonTest(TestCase):
