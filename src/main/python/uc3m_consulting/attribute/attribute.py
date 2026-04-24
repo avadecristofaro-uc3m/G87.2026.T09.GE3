@@ -9,7 +9,7 @@ class Attribute():
         self.error_message = ""
         self.validation_pattern = r""
 
-    def validate(self,value):
+    def validate(self, value):
         """Validate attribute value"""
         myregex= re.compile(self.validation_pattern)
         res = myregex.fullmatch(value)
