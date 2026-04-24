@@ -5,9 +5,9 @@ from freezegun import freeze_time
 from uc3m_consulting.attribute.query_date_attribute import QueryDateAttribute
 from uc3m_consulting.enterprise_project import EnterpriseProject
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
-from uc3m_consulting.json_storage.DocumentsJsonStore import DocumentsJsonStore
-from uc3m_consulting.json_storage.NumDocsJsonStore import NumDocsJsonStore
-from uc3m_consulting.json_storage.ProjectsJsonStore import ProjectsJsonStore
+from uc3m_consulting.json_storage.documents_json_store import DocumentsJsonStore
+from uc3m_consulting.json_storage.num_docs_json_store import NumDocsJsonStore
+from uc3m_consulting.json_storage.projects_json_store import ProjectsJsonStore
 from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.attribute.cif_attribute import CifAttribute
 from uc3m_consulting.attribute.acronym_attribute import AcronymAttribute

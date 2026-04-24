@@ -19,7 +19,9 @@ class JsonStore:
         except FileNotFoundError:
             self._data_list = []
         except json.JSONDecodeError as exception:
-            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
+            raise EnterpriseManagementException(
+                "JSON Decode Error - Wrong JSON Format"
+            ) from exception
         return self._data_list
 
     def save_json_file(self):
@@ -30,7 +32,9 @@ class JsonStore:
         except FileNotFoundError as exception:
             raise EnterpriseManagementException("Wrong file  or file path") from exception
         except json.JSONDecodeError as exception:
-            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from exception
+            raise EnterpriseManagementException(
+                "JSON Decode Error - Wrong JSON Format"
+            ) from exception
 
     def add_to_store(self, new_item: dict):
         """Appends item to data list"""

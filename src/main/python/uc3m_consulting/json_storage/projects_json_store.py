@@ -1,6 +1,6 @@
 """Module for managing the Json Projects store"""
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
-from uc3m_consulting.json_storage.JsonStore import JsonStore
+from uc3m_consulting.json_storage.json_store import JsonStore
 from uc3m_consulting.enterprise_manager_config import PROJECTS_STORE_FILE
 
 

@@ -1,6 +1,6 @@
 """Module for managing the Json Number of Documents store"""
 
-from uc3m_consulting.json_storage.JsonStore import JsonStore
+from uc3m_consulting.json_storage.json_store import JsonStore
 from uc3m_consulting.enterprise_manager_config import TEST_NUMDOCS_STORE_FILE
 
 

@@ -1,7 +1,7 @@
 """Module for managing the Json Documents store"""
 
 from uc3m_consulting.enterprise_management_exception import EnterpriseManagementException
-from uc3m_consulting.json_storage.JsonStore import JsonStore
+from uc3m_consulting.json_storage.json_store import JsonStore
 from uc3m_consulting.enterprise_manager_config import TEST_DOCUMENTS_STORE_FILE
 
 

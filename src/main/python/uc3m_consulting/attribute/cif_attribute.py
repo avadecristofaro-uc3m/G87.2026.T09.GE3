@@ -32,7 +32,9 @@ class CifAttribute(Attribute):
             if index % 2 == 0:
                 doubled_value = int(numeric_part[index]) * 2
                 if doubled_value > 9:
-                    even_position_sum = even_position_sum + (doubled_value // 10) + (doubled_value % 10)
+                    even_position_sum = (even_position_sum
+                                         + (doubled_value // 10)
+                                         + (doubled_value % 10))
                 else:
                     even_position_sum = even_position_sum + doubled_value
             else:
